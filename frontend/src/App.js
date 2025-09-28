@@ -8,6 +8,7 @@ import AdminUI from './Components/AdminUI';
 import StudentUI from './Components/StudentUI';
 import ParentUI from './Components/ParentUI';
 import Login_Enhanced from './Components/Login_Enhanced';
+import LeaveApplicationPage from './Components/AdminDasboard/leave_apply';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Route path="/parent-ui" element={<ParentUI/>}/>
       <Route path="/Login" element={<Login_Enhanced/>}/>
       <Route path="/parent-ui" element={<ParentUI/>}/>
+      <Route path="/leave-application" element={<LeaveApplicationPage />}/>
     </Routes>
    </div>
   );
