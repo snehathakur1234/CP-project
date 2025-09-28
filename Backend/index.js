@@ -6,7 +6,7 @@ require('dotenv').config();
 require('./Models/db');
 const bodyParser = require('body-parser');
 const AuthRouter = require('./Routes/AutheRouter');
-const {saveForm} = require('../Backend/Controllers/Fetch');
+const {saveForm, getAdmin,getStud} = require('./Controllers/Fetch');
 
 const PORT =process.env.PORT || 5000;
 
@@ -16,7 +16,8 @@ app.get('/ping',(req,res)=>res.send("Pong"));
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/auth',AuthRouter);
-
+app.get('/getAdmin',getAdmin);
+app.get('/getStud',getStud);
 
 app.listen(PORT,()=>{
     console.log('Server is running on',PORT)

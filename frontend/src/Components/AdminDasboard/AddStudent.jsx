@@ -1,30 +1,49 @@
 import React, { useState } from 'react';
 import './AddStudent.css';
+import { handleError, handleSuccess } from '../../util';
+import { ToastContainer } from 'react-toastify';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AddStudent = () => {
+
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    studentName: '',
-    studentClass: '',
-    division: '',
-    roomNumber: '',
-    studentPhone: '',
-    parentPhone: '',
-    address: '',
-    photoUrl: ''
+ s_name:"",department:"",division:"",r_no:"",s_phone:"",p_phone:"",address:"",photo_url:""
   });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  
+  const [roomData,setRoomData] = useState({id:"",status:"",students:[],capacity:"",current:""});
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-  };
+  
+    if (formData.s_name.trim() === "") return; // prevent empty input
+  
+    // Create updated roomData including the new student
+    const updatedRoomData = {
+      ...roomData,
+      students: [...roomData.students, formData.s_name]
+    };
+  
+    // Optional: update state for UI
+    setRoomData(updatedRoomData);
+  
+    try {
+      // Save student form
+      const res1 = await axios.post('http://localhost:5000/auth/saveForm', formData);
+      if (res1.data.success) {
+        // Save roomData with updated students
+        await axios.post('http://localhost:5000/auth/saveData', updatedRoomData);
+        handleSuccess("Student Added Successfully And Room allocated: " + formData.r_no);
+  
+        setTimeout(() => navigate("/admin-ui"), 2000);
+      }
+    } catch (err) {
+      handleError("Error Occurred");
+    }
+  
+    // Clear input field
+    setFormData(prev => ({ ...prev, s_name: "" }));
+  };  
 
   return (
     <div className="add-student-container">
@@ -37,8 +56,12 @@ const AddStudent = () => {
               type="text"
               id="studentName"
               name="studentName"
-              value={formData.studentName}
-              onChange={handleChange}
+              value={formData.s_name}
+              onChange={(e) => {
+  setFormData({
+  ...formData,      
+  s_name: e.target.value
+})}}
               required
             />
           </div>
@@ -48,8 +71,11 @@ const AddStudent = () => {
               type="text"
               id="studentClass"
               name="studentClass"
-              value={formData.studentClass}
-              onChange={handleChange}
+              value={formData.department}
+              onChange={(e) => setFormData({
+  ...formData,      
+  department: e.target.value
+})}
               required
             />
           </div>
@@ -63,7 +89,10 @@ const AddStudent = () => {
               id="division"
               name="division"
               value={formData.division}
-              onChange={handleChange}
+              onChange={(e) => setFormData({
+  ...formData,      
+  division: e.target.value
+})}
               required
             />
           </div>
@@ -73,8 +102,14 @@ const AddStudent = () => {
               type="text"
               id="roomNumber"
               name="roomNumber"
-              value={formData.roomNumber}
-              onChange={handleChange}
+              value={formData.r_no}
+              onChange={(e) => {
+
+                setRoomData({...roomData,id:e.target.value})
+setFormData({
+  ...formData,      
+  r_no: e.target.value
+})}}
               required
             />
           </div>
@@ -87,8 +122,11 @@ const AddStudent = () => {
               type="tel"
               id="studentPhone"
               name="studentPhone"
-              value={formData.studentPhone}
-              onChange={handleChange}
+              value={formData.s_phone}
+              onChange={(e) => setFormData({
+  ...formData,      
+  s_phone: e.target.value
+})}
               required
             />
           </div>
@@ -98,8 +136,11 @@ const AddStudent = () => {
               type="tel"
               id="parentPhone"
               name="parentPhone"
-              value={formData.parentPhone}
-              onChange={handleChange}
+              value={formData.p_phone}
+              onChange={(e) => setFormData({
+  ...formData,      
+  p_phone: e.target.value
+})}
               required
             />
           </div>
@@ -112,7 +153,10 @@ const AddStudent = () => {
             id="address"
             name="address"
             value={formData.address}
-            onChange={handleChange}
+            onChange={((e) => setFormData({
+  ...formData,      
+  address: e.target.value
+}))}
             required
           />
         </div>
@@ -123,14 +167,18 @@ const AddStudent = () => {
             type="url"
             id="photoUrl"
             name="photoUrl"
-            value={formData.photoUrl}
-            onChange={handleChange}
+            value={formData.photo_url}
+            onChange={(e) => setFormData({
+  ...formData,      
+  photo_url: e.target.value
+})}
             placeholder="https://example.com/photo.jpg"
           />
         </div>
         
         <button type="submit" className="submit-btn">Add Student</button>
       </form>
+      <ToastContainer/>
     </div>
   );
 };
