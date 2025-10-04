@@ -9,6 +9,8 @@ function AdminUI() {
   
     const navigate = useNavigate();
     useEffect(() => {
+
+        console.log(localStorage.email+" I am from server");
         const fetchData = async () => {
             try {
                 const response = await axios.get("http://localhost:5000/getAdmin");
@@ -52,7 +54,7 @@ function AdminUI() {
     const notifications = [
         { id: 1, type: 'application', message: 'New leave application from Rajesh Kumar', time: '2 min ago', urgent: true },
         //{ id: 2, type: 'maintenance', message: 'Room A103 requires maintenance', time: '1 hour ago', urgent: false },
-        //{ id: 3, type: 'checkin', message: 'Student check-in completed - B201', time: '3 hours ago', urgent: false },
+        { id: 3, type: 'checkin', message: 'Student check-in completed - B201', time: '3 hours ago', urgent: false },
         { id: 2, type: 'application', message: 'Leave application approved for Jane Smith', time: '5 hours ago', urgent: false }
     ];
 

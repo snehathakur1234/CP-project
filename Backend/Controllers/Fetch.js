@@ -1,6 +1,8 @@
 const Form = require('../Models/Form');
 const User = require('../Models/user');
 const Rooms = require('../Models/Rooms');
+const Notification = require('../Models/Notification')
+const bcrypt = require('bcrypt');
 
 const saveForm = async(req,res) =>{
         try{
@@ -14,8 +16,16 @@ const saveForm = async(req,res) =>{
                 return res.status(409).json({message:'Student is already exist',success : false});
             }
 
-            const formModel = new Form({s_name,department,division,r_no,s_phone,p_phone,address,photo_url});
+            const name = s_name;
+            const email = division;
+            const password = p_phone;
+            const role = 'user';
 
+            const newUser = new User({name,email,password,role});
+            newUser.password = await bcrypt.hash(password,10);
+            await newUser.save();
+
+            const formModel = new Form({s_name,department,division,r_no,s_phone,p_phone,address,photo_url});
             await formModel.save();
 
             res.json({
@@ -65,6 +75,33 @@ const getStud = async(req,res)=>{
     }
 }
 
+const fetchStudent = async (req, res) => {
+  try {
+    const {email} = req.query;
+    console.log(email)
+    const student = await Form.findOne({division:email});
+
+    if (student) {
+      return res.json({
+        message: "Student Fetched Success",
+        success: true,
+        data: student
+      });
+    } else {
+      return res.status(404).json({
+        message: "Student not found",
+        success: false
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error fetching Specific Student",
+      success: false,
+      error: err.message
+    });
+  }
+};
+
 const saveData = async(req,res) =>{
     try{
          const {id,status,students,capacity,current} =req.body;
@@ -75,9 +112,30 @@ const saveData = async(req,res) =>{
          await RoomsData.save();
     }
     catch{
-
+       res.status(500).json({
+            message: "Error stroing rooms",
+            success: false,
+            error: err.message
+        });
     }
 }
-module.exports = {saveForm , getAdmin , getStud,saveData};
+
+const StoreNotification = async(req,res)=>{
+    try{
+        const id =await Notification.countDocuments();
+        const{type,message,urgent} = req.body;
+
+        const notification = new Notification({id,type,message,urgent});
+        await notification.save();
+    }
+    catch{
+         res.status(500).json({
+            message: "Error storing notification",
+            success: false,
+            error: err.message
+        });
+    }
+} 
+module.exports = {saveForm , getAdmin , getStud,saveData,StoreNotification,fetchStudent};
 
 

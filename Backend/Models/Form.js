@@ -23,7 +23,7 @@ const FormSchema =new mongoose.Schema({
         required : true
     },
     p_phone:{
-         type:String,
+         type:Number,
         required : true
     },
     address:{
@@ -33,6 +33,10 @@ const FormSchema =new mongoose.Schema({
     photo_url:{
         type:String,
         default:'https:'
+    },
+    application:{
+        type:Number,
+        default:0
     }    
 });
 

@@ -8,6 +8,8 @@ import AdminUI from './Components/AdminUI';
 import StudentUI from './Components/StudentUI';
 import ParentUI from './Components/ParentUI';
 import Login_Enhanced from './Components/Login_Enhanced';
+import MentorUI from './Components/MentorUI';
+import ReviewModel from './Components/SubComponents/ReviewModel';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
       <Route path="/parent-ui" element={<ParentUI/>}/>
       <Route path="/Login" element={<Login_Enhanced/>}/>
       <Route path="/parent-ui" element={<ParentUI/>}/>
+      <Route path="/mentor-ui" element={<MentorUI/>}/>
+      <Route path="/review" element={<ReviewModel/>}/>
     </Routes>
    </div>
   );

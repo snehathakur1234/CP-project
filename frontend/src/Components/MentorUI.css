@@ -1,0 +1,329 @@
+/* MentorPortal.css */
+.mentor-portal {
+  min-height: 100vh;
+  background: linear-gradient(
+    to bottom right,
+    #9f7aea,
+    #6b46c1
+  );
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.portal-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: #2d3748;
+}
+
+.portal-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: #6b46c1;
+}
+
+.portal-header p {
+  font-size: 1.2rem;
+  color: #718096;
+  font-weight: 400;
+  margin: 0;
+}
+
+.applications-section {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.section-header h2 {
+  color: #2d3748;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.applications-summary {
+  display: flex;
+  gap: 15px;
+}
+
+.total-count, .pending-count {
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.total-count {
+  background: linear-gradient(135deg, #48bb78, #38a169);
+}
+
+.pending-count {
+  background: linear-gradient(135deg, #ed8936, #dd6b20);
+}
+
+.applications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.application-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 25px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.application-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(to bottom, #9f7aea, #6b46c1);
+}
+
+.application-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  border-color: #9f7aea;
+}
+
+.application-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.application-type {
+  color: #2d3748;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+  background: #f8f9fa;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border-left: 3px solid #9f7aea;
+}
+
+.status-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.status-approved {
+  background: linear-gradient(135deg, #48bb78, #38a169);
+}
+
+.status-pending {
+  background: linear-gradient(135deg, #ed8936, #dd6b20);
+}
+
+.status-progress {
+  background: linear-gradient(135deg, #4299e1, #3182ce);
+}
+
+.status-default {
+  background: linear-gradient(135deg, #a0aec0, #718096);
+}
+
+.application-content {
+  margin-bottom: 20px;
+}
+
+.application-title {
+  color: #6c757d;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.application-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.student-name {
+  color: #495057;
+  font-weight: 600;
+  background: #f8f9fa;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border-left: 3px solid #9f7aea;
+}
+
+.application-date {
+  color: #868e96;
+  font-weight: 500;
+  background: #f8f9fa;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.application-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+  background-color: #7b3fe4;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #682ecd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(123, 63, 228, 0.3);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #a0aec0, #718096);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #718096, #4a5568);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(160, 174, 192, 0.3);
+}
+
+/* Input styles matching the login theme */
+.input-field {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  border-color: #7b3fe4;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(123, 63, 228, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mentor-portal {
+    padding: 15px;
+  }
+  
+  .portal-header {
+    padding: 20px;
+  }
+  
+  .portal-header h1 {
+    font-size: 2rem;
+  }
+  
+  .portal-header p {
+    font-size: 1.1rem;
+  }
+  
+  .applications-section {
+    padding: 20px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+  
+  .applications-summary {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .application-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .application-meta {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  
+  .application-actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  
+  .btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Animation for card entrance */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.application-card {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.application-card:nth-child(1) { animation-delay: 0.1s; }
+.application-card:nth-child(2) { animation-delay: 0.2s; }
+.application-card:nth-child(3) { animation-delay: 0.3s; }
+.application-card:nth-child(4) { animation-delay: 0.4s; }

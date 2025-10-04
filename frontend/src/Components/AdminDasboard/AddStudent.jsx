@@ -15,30 +15,27 @@ const AddStudent = () => {
   const [roomData,setRoomData] = useState({id:"",status:"",students:[],capacity:"",current:""});
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    if (formData.s_name.trim() === "") return; // prevent empty input
-  
-    // Create updated roomData including the new student
+    if (formData.s_name.trim() === "") return; 
     const updatedRoomData = {
       ...roomData,
       students: [...roomData.students, formData.s_name]
     };
   
-    // Optional: update state for UI
     setRoomData(updatedRoomData);
   
     try {
       // Save student form
       const res1 = await axios.post('http://localhost:5000/auth/saveForm', formData);
       if (res1.data.success) {
-        // Save roomData with updated students
-        await axios.post('http://localhost:5000/auth/saveData', updatedRoomData);
+         axios.post('http://localhost:5000/auth/saveData', updatedRoomData);
         handleSuccess("Student Added Successfully And Room allocated: " + formData.r_no);
-  
-        setTimeout(() => navigate("/admin-ui"), 2000);
       }
     } catch (err) {
       handleError("Error Occurred");
+    }
+    finally
+    {
+       setTimeout(() => navigate("/admin-ui"), 1500);
     }
   
     // Clear input field
@@ -83,7 +80,7 @@ const AddStudent = () => {
         
         <div className="form-row">
           <div className="form-group">
-            <label htmlFor="division">Division</label>
+            <label htmlFor="division">Email</label>
             <input
               type="text"
               id="division"

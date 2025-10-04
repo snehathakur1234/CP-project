@@ -71,7 +71,9 @@ function Login() {
                 localStorage.setItem('token', jwtToken);
                 localStorage.setItem('loggedInUser', name);
                 localStorage.setItem('userRole', role);
-
+                localStorage.setItem('email',email);
+                
+                console.log(email);
                 setTimeout(() => {
                     console.log(typeof (role));
                     if (role === 'user') {
@@ -85,6 +87,10 @@ function Login() {
                     else if (role === 'parent') {
                         handleSuccess("Logged in as Parent");
                         navigate("/parent-ui");
+                    }
+                    else if (role === 'mentor') {
+                        handleSuccess("Logged in as Mentor");
+                        navigate("/mentor-ui");
                     }
                     else {
                         handleError("User not exist")
@@ -149,11 +155,6 @@ function Login() {
                     <input type="password" placeholder="Password" onChange={(e) => { setPass(e.target.value) }} />
                     <input type="submit" onClick={submit} value="Login" />
 
-                    <div className="divider">
-                        <span>OR</span>
-                    </div>
-
-                    <Link to="/Signup" className="signup-link">Create New Account</Link>
                     
                     {/* Demo Access Links */}
                     <div className="demo-access">

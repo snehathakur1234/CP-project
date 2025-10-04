@@ -1,12 +1,75 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './StudentUI.css';
-
+import axios from 'axios';
+import { ToastContainer } from 'react-toastify';
+import { handleSuccess ,handleError} from '../util';
+import { useNavigate } from 'react-router-dom';
 function StudentUI() {
+    
+     const email =localStorage.getItem("email");
+     const handleSubmit = async(e) => {
+    e.preventDefault();
+    
+     const  ApplicationD = {StudentName:studentInfo.name,Room_no:studentInfo.room,email:email,ApplicationType:formData.applicationType,start_Date:formData.startDate,end_date:formData.endDate,reason:formData.reason,urgancy:formData.urgent,SupportingDoc:""};
+      const res =  await axios.post("http://localhost:5000/auth/storeApplication",ApplicationD);
+      if(res.data.success)
+      {
+        handleSuccess(res.data.msg);
+        setFormData({
+        applicationType: "",
+        startDate: "",
+        endDate: "",
+        reason: "",
+        urgent: false,
+        documents: [],
+      });
+
+      }
+      else{ handleError("No data present");};
+  };
+   const handleChange = (e) => {
+    const { name, value, type, checked, files } = e.target;
+
+    if (type === "checkbox" || type === "radio") {
+      setFormData({ ...formData, [name]: checked });
+    } else if (type === "file") {
+      setFormData({ ...formData, [name]: files });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+   
+    const [formData, setFormData] = useState({
+    applicationType: "",
+    startDate: "",
+    endDate: "",
+    reason: "",
+    urgent: false,
+    documents: [],
+  });
+    useEffect(()=>{
+        const fetchStudent = async()=>{
+
+       
+        if (!email) {
+        console.error("No email found in localStorage");
+        return;
+      }
+      else
+      {
+        const res = await axios.get('http://localhost:5000/Student',{params: { email }});
+        setStudentInfo({name:res.data.data.s_name,department:res.data.data.department,room:res.data.data.r_no,application:res.data.data.application,staus:'Active'})
+      }
+        }
+
+        fetchStudent();
+    },[])
     const [activeTab, setActiveTab] = useState('status');
     const [studentInfo, setStudentInfo] = useState({
-        name: 'Rajesh Kumar',
-        enrollment: 'E2023001',
-        room: 'A-105',
+        name: 'Loading',
+        department: 'Loading',
+        room: 'fetching',
+        application:-1,
         status: 'Active'
     });
 
@@ -52,6 +115,8 @@ function StudentUI() {
         }
     };
 
+    const navigate = useNavigate();
+
     return (
         <div className="student-ui">
             {/* Header */}
@@ -67,12 +132,12 @@ function StudentUI() {
                         </div>
                         <div className="student-details">
                             <h3>{studentInfo.name}</h3>
-                            <p>{studentInfo.enrollment}</p>
+                            <p>{studentInfo.department}</p>
                         </div>
                     </div>
                     <div className="status-indicator">
                         <span className="status-dot active"></span>
-                        {studentInfo.status}
+                        Active
                     </div>
                 </div>
             </div>
@@ -116,7 +181,7 @@ function StudentUI() {
                                 <div className="card-icon">📋</div>
                                 <div className="card-info">
                                     <h3>Applications</h3>
-                                    <p className="app-count">3 Total</p>
+                                    <p className="app-count">{(previousApplications.length>studentInfo.application)?previousApplications.length:studentInfo.application}</p>
                                     <span className="app-status pending">1 Pending</span>
                                 </div>
                             </div>
@@ -131,12 +196,12 @@ function StudentUI() {
                         </div>
 
                         <div className="quick-actions">
-                            <button className="action-btn primary">
+                            <button className="action-btn primary"  onClick={() => setActiveTab('apply')}>
                                 📝 New Application
                             </button>
-                            <button className="action-btn secondary">
+                           {/* <button className="action-btn secondary">
                                 📍 Check-in
-                            </button>
+                            </button>*/}
                             <button className="action-btn secondary">
                                 📞 Contact Warden
                             </button>
@@ -146,39 +211,88 @@ function StudentUI() {
 
                 {activeTab === 'apply' && (
                     <div className="apply-content">
-                        <div className="application-form">
-                            <h3>New Application</h3>
-                            <div className="form-group">
-                                <label>Application Type</label>
-                                <select>
-                                    <option>Leave Application</option>
-                                    <option>Room Change Request</option>
-                                    <option>Maintenance Request</option>
-                                    <option>Special Permission</option>
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <label>Start Date</label>
-                                <input type="date" />
-                            </div>
-                            <div className="form-group">
-                                <label>End Date</label>
-                                <input type="date" />
-                            </div>
-                            <div className="form-group">
-                                <label>Reason</label>
-                                <textarea placeholder="Please provide detailed reason..." rows="4"></textarea>
-                            </div>
-                            <div className="form-group">
-                                <label>Supporting Documents</label>
-                                <input type="file" multiple />
-                            </div>
-                            <div className="form-actions">
-                                <button className="submit-btn">Submit Application</button>
-                                <button className="cancel-btn">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
+      <form className="application-form" onSubmit={handleSubmit}>
+        <h3>New Application</h3>
+
+        <div className="form-group">
+          <label>Application Type</label>
+          <select
+            name="applicationType"
+            value={formData.applicationType}
+            onChange={handleChange}
+          >
+            <option value="">-- Select --</option>
+            <option value="Leave Application">Leave Application</option>
+            <option value="Room Change Request">Room Change Request</option>
+            <option value="Maintenance Request">Maintenance Request</option>
+            <option value="Special Permission">Special Permission</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>Start Date</label>
+          <input
+            type="date"
+            name="startDate"
+            value={formData.startDate}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>End Date</label>
+          <input
+            type="date"
+            name="endDate"
+            value={formData.endDate}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Reason</label>
+          <textarea
+            name="reason"
+            placeholder="Please provide detailed reason..."
+            rows="4"
+            value={formData.reason}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div
+          className="form-group"
+          style={{ display: "flex", alignItems: "center", gap: "8px" }}
+        >
+          <input
+            type="radio"
+            name="urgent"
+            checked={formData.urgent}
+            onChange={handleChange}
+          />
+          <label>URGENT </label>
+        </div>
+
+        <div className="form-group">
+          <label>Supporting Documents</label>
+          <input
+            type="file"
+            name="documents"
+            multiple
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-actions">
+          <button type="submit" className="submit-btn">
+            Submit Application
+          </button>
+          <button type="button" className="cancel-btn">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
                 )}
 
                 {activeTab === 'location' && (
@@ -233,6 +347,7 @@ function StudentUI() {
                     ))}
                 </div>
             </div>
+            <ToastContainer/>
         </div>
     );
 }
